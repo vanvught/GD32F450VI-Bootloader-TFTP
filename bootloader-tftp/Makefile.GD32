@@ -1,0 +1,18 @@
+DEFINES =DISABLE_JSON
+DEFINES+=DISABLE_BIN
+DEFINES+=DISABLE_RTC
+DEFINES+=DISABLE_FS
+
+DEFINES+=UDP_MAX_PORTS_ALLOWED=2
+
+DEFINES+=CONFIG_FLASHROM_USE_I2C
+
+DEFINES+=NDEBUG
+
+SRCDIR=firmware lib
+
+LIBS=display spiflashstore remoteconfig spiflashinstall spiflash
+
+include ../firmware-template-gd32/Rules.mk
+
+prerequisites:
