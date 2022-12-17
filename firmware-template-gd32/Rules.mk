@@ -36,6 +36,7 @@ LIBS+=c++ c gd32
 $(info [${LIBS}])
 	
 DEFINES:=$(addprefix -D,$(DEFINES))
+DEFINES+=-DCONFIG_STORE_USE_I2C
 
 ifeq ($(findstring BOARD_BW_OPIDMX4,$(BOARD)), BOARD_BW_OPIDMX4)
 	DEFINES+=-DCONSOLE_I2C

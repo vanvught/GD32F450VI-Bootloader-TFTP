@@ -1,0 +1,9 @@
+DEFINES =NDEBUG
+
+ifneq ($(MAKE_FLAGS),)
+else
+	DEFINES+=CONFIG_STORE_USE_RAM
+endif
+
+include Rules.mk
+include ../firmware-template-gd32/lib/Rules.mk
