@@ -11,7 +11,7 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
-  __heap_size = DEFINED(__heap_size) ? __heap_size : 255K;
+  __heap_size = DEFINED(__heap_size) ? __heap_size : 1K;
   __stack_size = DEFINED(__stack_size) ? __stack_size : 1K;
 
   .vectors :
@@ -26,8 +26,8 @@ SECTIONS
   .text :
   {
     . = ALIGN(4);
-    *(.text.unlikely*)
-    *(.text.hot*)
+	*(.text.unlikely*)
+	*(.text.hot*)
 	*(.text)
 	*(.text*)
 	*(.glue_7)
@@ -95,24 +95,7 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;
   } >RAM AT> FLASH
-
-  . = ALIGN(4);
-  .bss :
-  {
-    _sbss = .;
-    __bss_start__ = _sbss;
-    *(.bss)
-    *(.bss*)
-    *(COMMON)
-    . = ALIGN(4);
-    _ebss = .;
-    __bss_end__ = _ebss;
-  } >RAM
-
- . = ALIGN(8);
-  PROVIDE ( end = _ebss );
-  PROVIDE ( _end = _ebss );
-
+  
   .tcmsram :
   {
   	_stcmsram = .;
@@ -132,7 +115,24 @@ SECTIONS
     PROVIDE( _sp = . ); 
     . = ALIGN(4);
   } >TCMSRAM AT>TCMSRAM
-  
+
+  . = ALIGN(4);
+  .bss :
+  {
+    _sbss = .;
+    __bss_start__ = _sbss;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+    . = ALIGN(4);
+    _ebss = .;
+    __bss_end__ = _ebss;
+  } >RAMADD AT>RAMADD
+
+ . = ALIGN(8);
+  PROVIDE ( end = _ebss );
+  PROVIDE ( _end = _ebss );
+
   .ramadd :
   {
     _sramadd = .;
@@ -151,7 +151,7 @@ SECTIONS
     heap_top = .;
     . = ALIGN(4);
   } >RAMADD AT>RAMADD
-  
+
   .bkpsram :
   {
   	. = ALIGN(4);
