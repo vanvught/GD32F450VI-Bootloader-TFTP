@@ -27,12 +27,7 @@ The bootloader can be installed with the tools supplied by GigaDevice -> [http:/
 
 The limitation for the firmware file to be uploaded is given by the RAM available. With the 256K RAM (RAMADD) we have no firmware file size limit with the 224K avaiavle flashrom. 
 
-There are 2 places for this configuration:
-
-File: `gd32f450vi_flash.ld`
-
-	  __heap_size = DEFINED(__heap_size) ? __heap_size : 255K;
-	  __stack_size = DEFINED(__stack_size) ? __stack_size : 1K;
+See also [https://www.gd32-dmx.org/bootloader.html](https://www.gd32-dmx.org/bootloader.html)
 
 File: `spiflashinstall.h`
 
