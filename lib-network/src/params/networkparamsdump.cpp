@@ -38,10 +38,6 @@
 
 void NetworkParams::Dump() {
 #ifndef NDEBUG
-	if (m_Params.nSetList == 0) {
-		return;
-	}
-
 	printf("%s::%s \'%s\':\n", __FILE__, __FUNCTION__, NetworkParamsConst::FILE_NAME);
 
 	if (isMaskSet(networkparams::Mask::DHCP)) {

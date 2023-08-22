@@ -33,6 +33,7 @@
 									<listOptionValue builtIn="false" value="DISABLE_TFTP"/>
 									<listOptionValue builtIn="false" value="BOARD_GD32F450VI"/>
 									<listOptionValue builtIn="false" value="GD32F450"/>
+									<listOptionValue builtIn="false" value="ENABLE_TFTP_SERVER"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1829124642" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -57,6 +58,7 @@
 									<listOptionValue builtIn="false" value="DISABLE_TFTP"/>
 									<listOptionValue builtIn="false" value="GD32F450"/>
 									<listOptionValue builtIn="false" value="BOARD_GD32F450VI"/>
+									<listOptionValue builtIn="false" value="ENABLE_TFTP_SERVER"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.114698089" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>

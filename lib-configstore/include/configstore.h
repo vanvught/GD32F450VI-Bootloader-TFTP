@@ -2,7 +2,7 @@
  * @file configstore.h
  *
  */
-/* Copyright (C) 2018-2022 by Arjan van Vught mailto:info@orangepi-dmx.nl
+/* Copyright (C) 2018-2023 by Arjan van Vught mailto:info@orangepi-dmx.nl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@
 namespace configstore {
 enum class Store {
 	NETWORK,
-	ARTNET,
 	DMXSEND,
 	WS28XXDMX,
 	E131,
@@ -86,13 +85,14 @@ public:
 		Update(tStore, 0, pData, nDataLength);
 	}
 	void Copy(configstore::Store tStore, void *pData, uint32_t nDataLength, uint32_t nOffset = 0, bool isSetList = true);
-	void CopyTo(configstore::Store tStore, void *pData, uint32_t& nDataLength);
 
 	void ResetSetList(configstore::Store tStore);
 
 	bool Flash();
 
 	void Dump();
+
+	void Delay();
 
 	static ConfigStore *Get() {
 		return s_pThis;

@@ -33,13 +33,23 @@
 namespace network {
 static constexpr auto LINE_IP = 2U;
 
+void display_emac_config() {
+	Display::Get()->ClearEndOfLine();
+	Display::Get()->PutString("Ethernet config");
+}
+
 void display_emac_start() {
-	Display::Get()->ClearLine(LINE_IP);
+	Display::Get()->ClearEndOfLine();
 	Display::Get()->PutString("Ethernet start");
 }
 
+void display_emac_status(const bool isLinkUp) {
+	Display::Get()->ClearEndOfLine();
+	Display::Get()->Printf(LINE_IP, "Ethernet Link %s", isLinkUp ? "UP" : "DOWN");
+}
+
 void display_ip() {
-	Display::Get()->ClearLine(LINE_IP);
+	Display::Get()->ClearEndOfLine();
 	Display::Get()->Printf(LINE_IP, "" IPSTR "/%d %c", IP2STR(Network::Get()->GetIp()), Network::Get()->GetNetmaskCIDR(), Network::Get()->GetAddressingMode());
 }
 
@@ -54,7 +64,7 @@ void display_hostname() {
 }
 
 void display_emac_shutdown() {
-	Display::Get()->ClearLine(LINE_IP);
+	Display::Get()->ClearEndOfLine();
 	Display::Get()->PutString("Ethernet shutdown");
 }
 

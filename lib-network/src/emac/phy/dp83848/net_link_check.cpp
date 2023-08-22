@@ -1,8 +1,8 @@
 /**
- * link_handle_change.cpp
+ * net_link_check.cpp
  *
  */
-/* Copyright (C) 2022 by Arjan van Vught mailto:info@gd32-dmx.org
+/* Copyright (C) 2023 by Arjan van Vught mailto:info@gd32-dmx.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,43 @@
  * THE SOFTWARE.
  */
 
-#include "network.h"
+#include <cstdint>
+
+#include "emac/net_link_check.h"
+#include "emac/phy.h"
+#include "emac/mmi.h"
 
 #include "debug.h"
 
-/**
- * Default implementation
- */
+#define PHY_REG_MICR				0x11U
+#define PHY_REG_MISR				0x12U
+#define PHY_INT_AND_OUTPUT_ENABLE	0x03U
+#define PHY_LINK_INT_ENABLE			0x20U
+
+#if !defined (PHY_ADDRESS)
+# define PHY_ADDRESS 1
+#endif
 
 namespace net {
-void __attribute__((weak)) link_handle_change(const net::Link state) {
-	DEBUG_PRINTF("net::Link %s", state == net::Link::STATE_UP ? "UP" : "DOWN");
+#if defined (ENET_LINK_CHECK_USE_INT) || defined (ENET_LINK_CHECK_USE_PIN_POLL)
+void link_pin_enable() {
+	uint16_t phy_value = PHY_INT_AND_OUTPUT_ENABLE;
+	phy_write(PHY_ADDRESS, PHY_REG_MICR, phy_value);
 
-	if (net::Link::STATE_UP == state) {
-		if (Network::Get()->IsDhcpUsed()) {
-			Network::Get()->EnableDhcp();
-		}
+	phy_read(PHY_ADDRESS, PHY_REG_MICR, phy_value);
+
+	if (PHY_INT_AND_OUTPUT_ENABLE != phy_value) {
+		DEBUG_PUTS("PHY_INT_AND_OUTPUT_ENABLE != phy_value");
 	}
+
+	phy_value = PHY_LINK_INT_ENABLE;
+	phy_write(PHY_ADDRESS, PHY_REG_MISR, phy_value);
 }
+
+void link_pin_recovery() {
+	uint16_t phy_value;
+    phy_read(PHY_ADDRESS, PHY_REG_MISR, phy_value);
+    phy_read(PHY_ADDRESS, mmi::REG_BMSR, phy_value);
+}
+#endif
 }  // namespace net
