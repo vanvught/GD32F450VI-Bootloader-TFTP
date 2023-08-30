@@ -122,6 +122,7 @@ int main(void) {
 
 	remoteConfig.SetEnableReboot(true);
 
+	network::display_ip();
 	display.Printf(3, "Bootloader TFTP Srvr");
 
 	hw.SetMode(hardware::ledblink::Mode::FAST);
