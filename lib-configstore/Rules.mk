@@ -46,7 +46,7 @@ ifneq ($(MAKE_FLAGS),)
 
 	ifeq ($(findstring NODE_ARTNET,$(MAKE_FLAGS)), NODE_ARTNET)
 		EXTRA_SRCDIR+=src/artnet
-		EXTRA_INCLUDES+=../lib-artnet/include ../lib-artnet4/include
+		EXTRA_INCLUDES+=../lib-artnet/include
 		EXTRA_SRCDIR+=src/rdm
 		RDM=1
 		EXTRA_INCLUDES+=../lib-rdm/include ../lib-rdmsensor/include ../lib-rdmsubdevice/include
@@ -105,6 +105,11 @@ ifneq ($(MAKE_FLAGS),)
 		EXTRA_INCLUDES+=../lib-l6470dmx/include ../lib-l6470/include
 	endif
 	
+	ifeq ($(findstring OUTPUT_DMX_TLC59711,$(MAKE_FLAGS)), OUTPUT_DMX_TLC59711)
+		EXTRA_SRCDIR+=src/tlc59711
+		EXTRA_INCLUDES+=../lib-tlc59711dmx/include ../lib-tlc59711/include
+	endif
+	
 	ifeq ($(findstring RDM_CONTROLLER,$(MAKE_FLAGS)), RDM_CONTROLLER)
 		ifdef RDM
 		else
@@ -137,7 +142,7 @@ ifneq ($(MAKE_FLAGS),)
 	endif
 else
 	EXTRA_SRCDIR+=src/artnet
-	EXTRA_INCLUDES+=../lib-artnet/include ../lib-artnet4/include 
+	EXTRA_INCLUDES+=../lib-artnet/include
 	EXTRA_SRCDIR+=src/e131
 	EXTRA_INCLUDES+=../lib-e131/include
 	EXTRA_SRCDIR+=src/node 
@@ -151,6 +156,7 @@ else
 	EXTRA_INCLUDES+=../lib-rdm/include ../lib-rdmsensor/include ../lib-rdmsubdevice/include		
 	EXTRA_SRCDIR+=src/stepper
 	EXTRA_INCLUDES+=../lib-l6470dmx/include ../lib-l6470/include
+	EXTRA_INCLUDES+=../lib-tlc59711dmx/include ../lib-tlc59711/include
 	
 	DEFINES+=ARTNET_VERSION=4
 	DEFINES+=LIGHTSET_PORTS=4
@@ -159,7 +165,6 @@ else
 endif
 
 EXTRA_INCLUDES+=../lib-displayudf/include ../lib-display/include
-EXTRA_INCLUDES+=../lib-tlc59711dmx/include ../lib-tlc59711/include
 EXTRA_INCLUDES+=../lib-dmxsend/include
 EXTRA_INCLUDES+=../lib-dmxmonitor/include
 EXTRA_INCLUDES+=../lib-dmxreceiver/include ../lib-dmx/include
