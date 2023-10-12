@@ -1,5 +1,5 @@
 /**
- * @file remoteconfig.cpp;
+ * @file remoteconfigjson.cpp
  *
  */
 /* Copyright (C) 2021-2023 by Arjan van Vught mailto:info@orangepi-dmx.nl
@@ -26,11 +26,12 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "remoteconfig.h"
 #include "hardware.h"
+#include "network.h"
 #include "display.h"
 #include "firmwareversion.h"
-#include "network.h"
-#include "remoteconfig.h"
+
 #include "emac/phy.h"
 
 namespace remoteconfig {
@@ -157,5 +158,4 @@ uint16_t json_get_phystatus(char *pOutBuffer, const uint16_t nOutBufferSize) {
 						net::phy_string_get_autonegotiation(phyStatus.bAutonegotiation)));
 		return nLength;
 }
-
-}
+}  // namespace remoteconfig

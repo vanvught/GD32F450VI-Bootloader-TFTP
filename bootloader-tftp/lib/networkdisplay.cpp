@@ -2,7 +2,7 @@
  * @file networkdisplay.cpp
  *
  */
-/* Copyright (C) 2022 by Arjan van Vught mailto:info@gd32-dmx.org
+/* Copyright (C) 2022-2023 by Arjan van Vught mailto:info@gd32-dmx.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,12 +35,12 @@ static constexpr auto LINE_IP = 2U;
 
 void display_emac_config() {
 	Display::Get()->ClearEndOfLine();
-	Display::Get()->PutString("Ethernet config");
+	Display::Get()->Printf(LINE_IP, "Ethernet config");
 }
 
 void display_emac_start() {
 	Display::Get()->ClearEndOfLine();
-	Display::Get()->PutString("Ethernet start");
+	Display::Get()->Printf(LINE_IP, "Ethernet start");
 }
 
 void display_emac_status(const bool isLinkUp) {
