@@ -1,8 +1,8 @@
 /**
- * @file stdint.h
+ * json_get_phystatus.cpp
  *
  */
-/* Copyright (C) 2017-2020 by Arjan van Vught mailto:info@orangepi-dmx.nl
+/* Copyright (C) 2023 by Arjan van Vught mailto:info@gd32-dmx.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,23 @@
  * THE SOFTWARE.
  */
 
-#ifndef STDINT_H_
-#define STDINT_H_
+#include <cstdio>
 
-typedef unsigned char		uint8_t;
-typedef unsigned short		uint16_t;
-typedef unsigned int		uint32_t;
-typedef unsigned long long	uint64_t;
+#include "emac/phy.h"
 
-typedef signed char			int8_t;
-typedef signed short		int16_t;
-typedef signed int			int32_t;
-typedef signed long long	int64_t;
+namespace remoteconfig {
+namespace net {
+uint16_t json_get_phystatus(char *pOutBuffer, const uint16_t nOutBufferSize) {
+	::net::PhyStatus phyStatus;
+	::net::phy_customized_status(phyStatus);
 
-typedef int 				intptr_t;
-typedef unsigned int 		uintptr_t;
-
-#if !defined(UINT32_MAX)
- #ifdef __cplusplus
-  #define UINT32_MAX	(static_cast<uint32_t>(-1))
- #else
-  #define UINT32_MAX	((uint32_t)-1)
- #endif
-#endif
-
-#if !defined(UINT16_MAX)
- #ifdef __cplusplus
-  #define UINT16_MAX	(static_cast<uint16_t>(-1))
- #else
-  #define UINT16_MAX	((uint16_t)-1)
- #endif
-#endif
-
-
-#define INT16_MIN   (-0x7fff - 1)
-
-#define INT16_MAX   0x7fff
-
-#endif
-
+	const auto nLength = static_cast<uint16_t>(snprintf(pOutBuffer, nOutBufferSize,
+						"{\"link\":\"%s\",\"speed\":\"%s\",\"duplex\":\"%s\",\"autonegotiation\":\"%s\"}",
+						::net::phy_string_get_link(phyStatus.link),
+						::net::phy_string_get_speed(phyStatus.speed),
+						::net::phy_string_get_duplex(phyStatus.duplex),
+						::net::phy_string_get_autonegotiation(phyStatus.bAutonegotiation)));
+	return nLength;
+}
+}  // namespace net
+}  // namespace remoteconfig

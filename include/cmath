@@ -1,8 +1,8 @@
 /**
- * @file cstddef
+ * @file cmath
  *
  */
-/* Copyright (C) 2017-2021 by Arjan van Vught mailto:info@orangepi-dmx.nl
+/* Copyright (C) 2023 by Arjan van Vught mailto:info@orangepi-dmx.nl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  * THE SOFTWARE.
  */
 
-#ifndef CSTDDEF_
-#define CSTDDEF_
+#ifndef CMATH_
+#define CMATH_
 
 #ifdef __cplusplus
-# include <stddef.h>
+# include <math.h>
 #endif
 
-#endif /* CSTDDEF_ */
+#endif /* CMATH_ */
