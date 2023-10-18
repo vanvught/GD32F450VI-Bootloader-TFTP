@@ -12,7 +12,7 @@ ENTRY(Reset_Handler)
 SECTIONS
 {
   __heap_size = DEFINED(__heap_size) ? __heap_size : 1K;
-  __stack_size = DEFINED(__stack_size) ? __stack_size : 1K;
+  __stack_size = DEFINED(__stack_size) ? __stack_size : 2K;
 
   .vectors :
   {
@@ -33,12 +33,27 @@ SECTIONS
 	*(.glue_7)
 	*(.glue_7t)
 	*(.eh_frame)
-
     KEEP (*(.init))
-    KEEP (*(.fini))
-
+	KEEP (*(.fini))
     . = ALIGN(4);
     _etext = .;
+    
+    . = ALIGN(8);
+     
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+    KEEP (*(.preinit_array*))
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+
+    PROVIDE_HIDDEN (__init_array_start = .);
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array*))
+    PROVIDE_HIDDEN (__init_array_end = .);
+
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    KEEP (*(.fini_array*))
+    KEEP (*(SORT(.fini_array.*)))
+    PROVIDE_HIDDEN (__fini_array_end = .);
+    
   } >FLASH
 
   .rodata :
@@ -47,42 +62,6 @@ SECTIONS
     *(.rodata)
     *(.rodata*)
     . = ALIGN(4);
-  } >FLASH
-
-   .ARM.extab :
-  { 
-     *(.ARM.extab* .gnu.linkonce.armextab.*) 
-  } >FLASH
-  
-    .ARM : {
-    __exidx_start = .;
-    *(.ARM.exidx*)
-    __exidx_end = .;
-    } >FLASH
-
-  .ARM.attributes : { *(.ARM.attributes) } > FLASH
-
-  .preinit_array :
-  {
-    PROVIDE_HIDDEN (__preinit_array_start = .);
-    KEEP (*(.preinit_array*))
-    PROVIDE_HIDDEN (__preinit_array_end = .);
-  } >FLASH
-
-  .init_array :
-  {
-    PROVIDE_HIDDEN (__init_array_start = .);
-    KEEP (*(SORT(.init_array.*)))
-    KEEP (*(.init_array*))
-    PROVIDE_HIDDEN (__init_array_end = .);
-  } >FLASH
-
-  .fini_array :
-  {
-    PROVIDE_HIDDEN (__fini_array_start = .);
-    KEEP (*(.fini_array*))
-    KEEP (*(SORT(.fini_array.*)))
-    PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
   _sidata = LOADADDR(.data);
@@ -95,26 +74,36 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;
   } >RAM AT> FLASH
-  
+
+  .stack :
+  {
+	. = ALIGN(4);
+	PROVIDE( stack_low = . );
+    . = . + __stack_size;  
+    PROVIDE( _sp = . ); 
+    . = ALIGN(4);
+  } >TCMSRAM
+
   .tcmsram :
   {
-  	_stcmsram = .;
   	. = ALIGN(4);
     *(.tcmsram)
     *(.tcmsram*)
-    *(.lightset*)
+    . = ALIGN(4);
+    _snetwork = .;
     *(.network*)
     . = ALIGN(4);
-     _etcmsram = .;
-  } >TCMSRAM AT>TCMSRAM
-
-  .stack ORIGIN(TCMSRAM) + LENGTH(TCMSRAM) - __stack_size :
+    _enetwork = .;
+  } >TCMSRAM
+  
+  .heap :
   {
-	. = ALIGN(4);
-    . = __stack_size;  
-    PROVIDE( _sp = . ); 
     . = ALIGN(4);
-  } >TCMSRAM AT>TCMSRAM
+    heap_low = .;
+    . = . + __heap_size;
+    heap_top = .;
+    . = ALIGN(4);
+  } >TCMSRAM
 
   . = ALIGN(4);
   .bss :
@@ -127,7 +116,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;
     __bss_end__ = _ebss;
-  } >RAMADD AT>RAMADD
+  } >RAMADD
 
  . = ALIGN(8);
   PROVIDE ( end = _ebss );
@@ -139,18 +128,9 @@ SECTIONS
   	. = ALIGN(4);
     *(.ramadd)
     *(.ramadd*)
-	. = ALIGN(4);
+    . = ALIGN(4);
     _eramadd = .;
-  } >RAMADD AT>RAMADD
-
-  .heap ORIGIN(RAMADD) + LENGTH(RAMADD) - __heap_size :
-  {
-    . = ALIGN(4);
-    heap_low = .;
-    . = . + __heap_size;
-    heap_top = .;
-    . = ALIGN(4);
-  } >RAMADD AT>RAMADD
+  } >RAMADD
 
   .bkpsram :
   {
@@ -158,15 +138,14 @@ SECTIONS
     *(.bkpsram)
     *(.bkpsram*)
     *(.configstore*)
-  } >BKPSRAM AT>BKPSRAM
+  } >BKPSRAM
 
   /DISCARD/ :
   {
-	*(*.ARM.attributes)
+	*(*.ARM.*)
 	*(*.comment)
 	*(*.debug*)
   }
 }
 
- /* input sections */
 GROUP(libgcc.a libc.a)

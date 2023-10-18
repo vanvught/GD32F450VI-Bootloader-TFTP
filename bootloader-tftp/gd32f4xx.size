@@ -1,0 +1,15 @@
+build_gd32/main.elf  :
+section       size         addr
+.vectors     0x1ac    0x8000000
+.text       0x629c    0x80001ac
+.rodata      0xc18    0x8006448
+.data         0x70   0x20000000
+.stack       0x800   0x10000000
+.tcmsram    0x2690   0x10000800
+.heap        0x400   0x10002e90
+.bss       0x3a6bc   0x20030000
+.ramadd        0x0   0x2006a6bc
+.bkpsram       0x0   0x40024000
+Total      0x44a1c
+
+
