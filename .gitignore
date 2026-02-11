@@ -53,3 +53,4 @@
 *.map
 compile_commands.json
 /.cache
+/common/scripts/gd32/venv
