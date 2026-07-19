@@ -31,9 +31,7 @@ jobs:
         echo "$TOOLCHAIN_DIR/bin" >> "$GITHUB_PATH"
     - name: version
       run: arm-none-eabi-g++ --version
-    - name: make bootloader-tftp
+    - name: build all
       run: |
-        cd bootloader-tftp
-        make -f Makefile.GD32 clean
-        make -f Makefile.GD32
-        cd -
+        cd scripts
+        ./build_all.sh
