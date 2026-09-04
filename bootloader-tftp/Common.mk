@@ -9,8 +9,6 @@ DEFINES+=CONFIG_CLIB_USE_UART0
 
 DEFINES+=UDP_MAX_PORTS_ALLOWED=3
 
-DEFINES+=RTL8201F_LED1_LINK_ALL
-
 SRCDIR+=firmware lib
 
 LIBS+=remoteconfig flashcodeinstall configstore display flashcode flash
